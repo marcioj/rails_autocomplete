@@ -10,4 +10,5 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require rails_autocomplete/jquery-ui
 //= require_tree .
