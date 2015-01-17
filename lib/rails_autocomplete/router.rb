@@ -10,7 +10,9 @@ module RailsAutocomplete
       ApplicationController.subclasses.map(&:autocomplete_fields).compact.each do |autocomplete_fields|
         autocomplete_fields.each do |model_name, options|
           controller_name = options[:controller_name]
-          @mapper.get "autocomplete_#{model_name}" => controller_name
+          field = options[:field]
+          resource = options[:controller_name].gsub(/_controller$/, "")
+          @mapper.get "#{resource}/autocomplete_#{field}" => controller_name
         end
       end
     end
