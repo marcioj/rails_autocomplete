@@ -12,3 +12,7 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
+group :development, :test do
+  gem "jquery-ui-rails"
+  gem "jquery-rails"
+end
