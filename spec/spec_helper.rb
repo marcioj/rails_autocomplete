@@ -7,6 +7,7 @@ require "rails/test_help"
 require "rspec/rails"
 require "capybara/rails"
 require "capybara/rspec"
+require "pry"
 
 # Filter out Minitest backtrace while allowing backtrace from other libraries
 # to be shown.
