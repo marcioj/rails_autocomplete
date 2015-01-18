@@ -8,7 +8,10 @@ module RailsAutocomplete
 
     module ClassMethods
       def autocomplete(field, options = {})
+        options.assert_valid_keys(:search_type)
         model_name = controller_name.gsub(/_controller$/, "").singularize
+        model_class = model_name.classify.constantize
+        raise "Unknow column #{field} for model #{model_class}" unless model_class.column_names.include?(field.to_s)
         options[:controller_name] = controller_name
         options[:field] = field
         self.autocomplete_fields ||= {}
@@ -18,8 +21,6 @@ module RailsAutocomplete
         search_type = options[:search_type] || :starts_with
 
         define_method "autocomplete_#{field}" do
-          model_class = model_name.classify.constantize
-
           term = case search_type
             when :starts_with then "#{params[:term]}%"
             when :ends_with then "%#{params[:term]}"
