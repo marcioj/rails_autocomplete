@@ -8,11 +8,13 @@ module RailsAutocomplete
 
     def generate_routes
       ApplicationController.subclasses.map(&:autocomplete_fields).compact.each do |autocomplete_fields|
-        autocomplete_fields.each do |model_name, options|
-          controller_name = options[:controller_name]
-          field = options[:field]
-          resource = options[:controller_name].gsub(/_controller$/, "")
-          @mapper.get "#{resource}/autocomplete_#{field}" => controller_name
+        autocomplete_fields.each do |model_name, field_options|
+          field_options.each do |field, options|
+            controller_name = options[:controller_name]
+            field = options[:field]
+            resource = options[:controller_name].gsub(/_controller$/, "")
+            @mapper.get "#{resource}/autocomplete_#{field}" => controller_name
+          end
         end
       end
     end

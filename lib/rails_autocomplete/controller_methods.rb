@@ -12,11 +12,20 @@ module RailsAutocomplete
         options[:controller_name] = controller_name
         options[:field] = field
         self.autocomplete_fields ||= {}
-        self.autocomplete_fields[model_name.to_sym] = options
+        self.autocomplete_fields[model_name.to_sym] ||= {}
+        self.autocomplete_fields[model_name.to_sym][field] = options
+
+        search_type = options[:search_type] || :starts_with
 
         define_method "autocomplete_#{field}" do
           model_class = model_name.classify.constantize
-          relation = model_class.where("lower(#{field}) LIKE ?", "#{params[:term]}%").select(:id, field)
+
+          term = case search_type
+            when :starts_with then "#{params[:term]}%"
+            when :ends_with then "%#{params[:term]}"
+          end
+
+          relation = model_class.where("lower(#{field}) LIKE ?", term).select(:id, field)
           attributes = relation.to_a.map(&:attributes)
           attributes.each do |attribute|
             attribute["value"] = attribute.delete(field.to_s)
