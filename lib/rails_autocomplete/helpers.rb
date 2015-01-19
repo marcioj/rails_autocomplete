@@ -1,7 +1,7 @@
 module ActionView
   module Helpers
     module FormTagHelper
-      def autocomplete_tag(field, options = {})
+      def autocomplete_field_tag(field, options = {})
         options[:data] = {}
         options[:data][:autocomplete] = true
         options[:data][:"autocomplete-url"] = url_for(action: "autocomplete_#{field}")
