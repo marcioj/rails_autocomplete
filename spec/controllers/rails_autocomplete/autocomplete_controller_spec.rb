@@ -1,16 +1,32 @@
 require 'spec_helper'
 
-RSpec.describe UsersController, type: :controller do
+RSpec.describe RailsAutocomplete::AutocompleteController, type: :controller do
+  routes { RailsAutocomplete::Engine.routes }
+
+  after(:each) do
+    RailsAutocomplete.mapping = nil
+  end
+
   def json_response
     JSON.parse(response.body)
   end
 
-  describe "GET autocomplete_name" do
+  describe "exists" do
+    it { expect(RailsAutocomplete::AutocompleteController).to be_present }
+  end
+
+  describe "GET index" do
     let(:term) { "" }
 
     context "simple search" do
+      before do
+        RailsAutocomplete.autocomplete do
+          field :name, from: "User"
+        end
+      end
+
       def action
-        get :autocomplete_name, term: term, format: :json
+        get :index, term: term, model_class: "User", field: "name", format: :json
       end
 
       let!(:user_1) { create(:user, name: "marcio") }
@@ -25,8 +41,14 @@ RSpec.describe UsersController, type: :controller do
     end
 
     context "with search type ends_with" do
+      before do
+        RailsAutocomplete.autocomplete do
+          field :address, from: "User", search_type: :ends_with
+        end
+      end
+
       def action
-        get :autocomplete_address, term: term, format: :json
+        get :index, term: term, model_class: "User", field: "address", format: :json
       end
 
       let!(:user_1) { create(:user, address: "whatever street") }

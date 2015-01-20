@@ -1,2 +1,3 @@
-Rails.application.routes.draw do
+RailsAutocomplete::Engine.routes.draw do
+  get 'autocomplete' => 'autocomplete#index'
 end

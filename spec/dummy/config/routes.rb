@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  RailsAutocomplete.routes(self)
+  mount RailsAutocomplete::Engine => '/rails_autocomplete'
   get 'home/index'
   root 'home#index'
   get 'users' => 'users#index'
