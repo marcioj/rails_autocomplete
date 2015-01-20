@@ -16,7 +16,7 @@ RSpec.describe UsersController, type: :feature do
   end
 
   # TODO fix the view helper
-  xit "works", js: true do
+  it "works", js: true do
     visit '/users'
     fill_in_autocomplete 'name', 'marc'
     choose_autocomplete 'marcio junior'

@@ -7,12 +7,12 @@ module RailsAutocomplete
 
     def search(term)
       field = options[:field]
-      search_type = options[:search_type] || :starts_with
+      search_type = (options[:search_type].presence || :starts_with).to_sym
 
       term = case search_type
         when :starts_with then "#{term}%"
         when :ends_with then "%#{term}"
-        else "Unknow search type #{search_type}"
+        else raise "Unknow search type #{search_type}"
       end
 
       model_class.where("lower(#{field}) LIKE ?", term).select(:id, field)
